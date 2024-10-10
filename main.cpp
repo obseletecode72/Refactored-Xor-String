@@ -3,7 +3,6 @@
 #include "xor.hpp"
 
 int main() {
-    // Use RXor for all string literals
     printf("%s", RXor("Char Array:\n"));
     {
         const char* charStrings[] = {
