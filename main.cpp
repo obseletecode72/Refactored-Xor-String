@@ -3,12 +3,12 @@
 #include "xor.hpp"
 
 int main() {
-    printf("%s", RXor("Char Array:\n"));
+    printf("%s", xorstr_("Char Array:\n"));
     {
         const char* charStrings[] = {
-            RXor("String 1"),
-            RXor("String 2"),
-            RXor("String 3")
+            xorstr_("String 1"),
+            xorstr_("String 2"),
+            xorstr_("String 3")
         };
 
         for (const char* str : charStrings) {
@@ -16,12 +16,12 @@ int main() {
         }
     }
 
-    wprintf(L"%ls", RXor(L"WChar Array:\n"));
+    wprintf(L"%ls", xorstr_(L"WChar Array:\n"));
     {
         const wchar_t* wcharStrings[] = {
-            RXor(L"Wide String 1"),
-            RXor(L"Wide String 2"),
-            RXor(L"Wide String 3")
+            xorstr_(L"Wide String 1"),
+            xorstr_(L"Wide String 2"),
+            xorstr_(L"Wide String 3")
         };
 
         for (const wchar_t* str : wcharStrings) {
@@ -29,7 +29,7 @@ int main() {
         }
     }
 
-    system(RXor("pause"));
+    system(xorstr_("pause"));
 
     return 0;
 }
