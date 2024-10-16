@@ -3,7 +3,6 @@
 #ifndef XOR_HPP
 #define XOR_HPP
 
-#include <intrin.h>
 #include <cstdint>
 
 template<typename T, T v>
@@ -58,27 +57,6 @@ template<>
 struct make_unsigned<char> { using type = unsigned char; };
 
 template<>
-struct make_unsigned<short> { using type = unsigned short; };
-
-template<>
-struct make_unsigned<int> { using type = unsigned int; };
-
-template<>
-struct make_unsigned<long> { using type = unsigned long; };
-
-template<>
-struct make_unsigned<long long> { using type = unsigned long long; };
-
-template<>
-struct make_unsigned<unsigned char> { using type = unsigned char; };
-
-template<>
-struct make_unsigned<unsigned int> { using type = unsigned int; };
-
-template<>
-struct make_unsigned<unsigned long> { using type = unsigned long; };
-
-template<>
 struct make_unsigned<wchar_t> { using type = unsigned short; };
 
 template<typename T>
@@ -92,23 +70,7 @@ using make_unsigned_t = typename make_unsigned<T>::type;
 #define XORSTR_FORCEINLINE __forceinline
 
 namespace jm {
-    inline uint64_t ROTL64(uint64_t value, unsigned int count) noexcept {
-        return _rotl64(value, count);
-    }
-
     namespace detail {
-        constexpr uint64_t rotate_right_constexpr(uint64_t value, unsigned int count) noexcept {
-            return (value >> count) | (value << (64 - count));
-        }
-
-        constexpr uint64_t rotate_left_constexpr(uint64_t value, unsigned int count) noexcept {
-            return (value << count) | (value >> (64 - count));
-        }
-
-        inline uint64_t ROTR64(uint64_t value, unsigned int count) noexcept {
-            return _rotr64(value, count);
-        }
-
         constexpr uint64_t apply_xor(uint64_t value, uint64_t key) noexcept {
             return value ^ key;
         }
@@ -159,7 +121,7 @@ namespace jm {
                 << ((i % idx_offset) * 8 * value_size));
             }
 
-            value = rotate_right_constexpr(value, (key & 0x3F));
+            //value = rotate_right_constexpr(value, (key & 0x3F));
             value = apply_xor(value, key);
             value = apply_not(value);
 
@@ -202,10 +164,6 @@ namespace jm {
 
             for (size_t i = 0; i < sizeof(_storage) / sizeof(uint64_t); ++i) {
                 _storage[i] ^= keys[i];
-            }
-
-            for (size_t i = 0; i < sizeof(_storage) / sizeof(uint64_t); ++i) {
-                _storage[i] = ROTL64(_storage[i], (keys[i] & 0x3F));
             }
 
             return reinterpret_cast<pointer>(_storage);
