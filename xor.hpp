@@ -1,7 +1,10 @@
-#include <immintrin.h>
-#include <stdint.h>
-#include <stddef.h>
+#pragma once
+
+#ifndef XOR_HPP
+#define XOR_HPP
+
 #include <intrin.h>
+#include <cstdint>
 
 template<typename T, T v>
 struct integral_constant {
@@ -70,16 +73,10 @@ template<>
 struct make_unsigned<unsigned char> { using type = unsigned char; };
 
 template<>
-struct make_unsigned<unsigned short> { using type = unsigned short; };
-
-template<>
 struct make_unsigned<unsigned int> { using type = unsigned int; };
 
 template<>
 struct make_unsigned<unsigned long> { using type = unsigned long; };
-
-template<>
-struct make_unsigned<unsigned long long> { using type = unsigned long long; };
 
 template<>
 struct make_unsigned<wchar_t> { using type = unsigned short; };
@@ -222,3 +219,5 @@ namespace jm {
         integer_sequence<uint64_t, detail::key8<Indices>()...>,
         index_sequence<Indices...>>;
 }
+
+#endif
