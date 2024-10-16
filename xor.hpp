@@ -1,6 +1,3 @@
-#ifndef XOR_HPP
-#define XOR_HPP
-
 #include <immintrin.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -84,11 +81,17 @@ struct make_unsigned<unsigned long> { using type = unsigned long; };
 template<>
 struct make_unsigned<unsigned long long> { using type = unsigned long long; };
 
+template<>
+struct make_unsigned<wchar_t> { using type = unsigned short; };
+
 template<typename T>
 using make_unsigned_t = typename make_unsigned<T>::type;
 
 #define xorstr(str) ::jm::xor_string([]() { return str; }, integral_constant<size_t, sizeof(str) / sizeof(*str)>{}, make_index_sequence<::jm::detail::_buffer_size<sizeof(str)>()>{})
-#define xorstr_(str) xorstr(str).crypt_get()
+#define xorstr_(str) ([]() { \
+    static auto xor_str_instance = xorstr(str); \
+    return xor_str_instance.crypt_get(); \
+})()
 #define XORSTR_FORCEINLINE __forceinline
 
 namespace jm {
@@ -218,7 +221,4 @@ namespace jm {
         Size,
         integer_sequence<uint64_t, detail::key8<Indices>()...>,
         index_sequence<Indices...>>;
-
 }
-
-#endif
