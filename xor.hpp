@@ -121,7 +121,6 @@ namespace jm {
                 << ((i % idx_offset) * 8 * value_size));
             }
 
-            //value = rotate_right_constexpr(value, (key & 0x3F));
             value = apply_xor(value, key);
             value = apply_not(value);
 
