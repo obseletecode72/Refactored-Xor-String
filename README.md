@@ -2,4 +2,8 @@
 
 based on xorstr_ (https://github.com/JustasMasiulis/xorstr)
 
-this supports kernel and added some new operations on the crypt
+This:
+
+* It Supports Kernel
+* It Supports Arrays
+* It Supports Char Strings / Wide Strings
