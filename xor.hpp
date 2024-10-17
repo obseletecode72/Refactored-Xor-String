@@ -134,8 +134,8 @@ namespace jm {
     template<class CharT, size_t Size, uint64_t... Keys, size_t... Indices>
     class xor_string<CharT, Size, integer_sequence<uint64_t, Keys...>, index_sequence<Indices...>> {
         constexpr static inline uint64_t alignment = ((Size > 16) ? 32 : 16);
-
-        alignas(alignment) uint64_t _storage[sizeof...(Keys)];
+        alignas(alignment) mutable uint64_t _storage[sizeof...(Keys)];
+        mutable bool decrypted = false;
 
     public:
         using value_type = CharT;
@@ -153,20 +153,25 @@ namespace jm {
             return Size - 1;
         }
 
-        XORSTR_FORCEINLINE pointer crypt_get() noexcept
+        XORSTR_FORCEINLINE const_pointer crypt_get() const noexcept
         {
-            alignas(alignment) uint64_t keys[]{ ::jm::detail::load_from_reg(Keys)... };
+            if (!decrypted) {
+                uint64_t keys[] = { ::jm::detail::load_from_reg(Keys)... };
 
-            for (size_t i = 0; i < sizeof(_storage) / sizeof(uint64_t); ++i) {
-                _storage[i] = ::jm::detail::apply_not(_storage[i]);
+                for (size_t i = 0; i < sizeof(_storage) / sizeof(uint64_t); ++i) {
+                    _storage[i] = ::jm::detail::apply_not(_storage[i]);
+                }
+
+                for (size_t i = 0; i < sizeof(_storage) / sizeof(uint64_t); ++i) {
+                    _storage[i] ^= keys[i];
+                }
+
+                decrypted = true;
             }
 
-            for (size_t i = 0; i < sizeof(_storage) / sizeof(uint64_t); ++i) {
-                _storage[i] ^= keys[i];
-            }
-
-            return reinterpret_cast<pointer>(_storage);
+            return reinterpret_cast<const_pointer>(_storage);
         }
+
     };
 
     template<class L, size_t Size, size_t... Indices>
