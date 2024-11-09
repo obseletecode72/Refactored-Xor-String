@@ -64,8 +64,7 @@ using make_unsigned_t = typename make_unsigned<T>::type;
 
 #define xorstr(str) ::jm::xor_string([]() { return str; }, integral_constant<size_t, sizeof(str) / sizeof(*str)>{}, make_index_sequence<::jm::detail::_buffer_size<sizeof(str)>()>{})
 #define xorstr_(str) ([]() { \
-    static auto xor_str_instance = xorstr(str); \
-    return xor_str_instance.crypt_get(); \
+    return xorstr(str).crypt_get(); \
 })()
 #define XORSTR_FORCEINLINE __forceinline
 
