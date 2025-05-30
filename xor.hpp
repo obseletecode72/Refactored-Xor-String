@@ -7,11 +7,6 @@
 #include <cstddef>
 #include <array>
 #include <utility>
-// #include <fstream> // Removido
-// #include <string>  // Removido (a menos que usado em outro lugar no seu projeto)
-// #include <vector>  // Removido
-// #include <cstdio>  // Removido
-// #include <cstring> // Removido
 #include <type_traits>
 
 
